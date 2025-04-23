@@ -70,7 +70,7 @@ public class MainController {
 
             // Yeni pencere
             Stage formStage = new Stage();
-            formStage.setTitle("Add Game");
+            formStage.setTitle("Add Game ");
             formStage.setScene(new Scene(root));
             formStage.initModality(Modality.APPLICATION_MODAL);
             formStage.showAndWait();
