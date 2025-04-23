@@ -102,7 +102,7 @@ public class MainController {
             controller.setGame(selectedGame); // Formu doldur
 
             Stage formStage = new Stage();
-            formStage.setTitle("Edit Game");
+            formStage.setTitle("Edit Game ");
             formStage.setScene(new Scene(root));
             formStage.initModality(Modality.APPLICATION_MODAL);
             formStage.showAndWait();
