@@ -37,26 +37,23 @@ public class GameFormController {
         String genreInput = genreField.getText();
         String steamId = steamIdField.getText();
         int year = Integer.parseInt(yearField.getText());
-
         List<String> genres = Arrays.asList(genreInput.split(","));
 
-        return new Game(
-                title,
-                genres,
-                developer,
-                publisher,
-                null, // platform
-                null, // translators
-                steamId,
-                year,
-                0,    // playtime
-                "",   // format
-                "",   // language
-                0.0,  // rating
-                null, // tags
-                null  // imagePath
-        );
+        if (game == null) {
+            game = new Game(); // yeni oyun eklerken boşsa oluştur
+        }
+
+        // Mevcut game nesnesini güncelle ✅
+        game.setTitle(title);
+        game.setDeveloper(developer);
+        game.setPublisher(publisher);
+        game.setGenre(genres);
+        game.setSteamId(steamId);
+        game.setReleaseYear(year);
+
+        return game;
     }
+
 
     // Kaydet butonuna tıklanınca pencereyi kapat
     @FXML
