@@ -18,12 +18,8 @@ public class Game {
     private List<String> tags;
     private String imagePath;
 
-
-
-    // Boş constructor (JSON için gerekli)
     public Game() {}
 
-    // Dolu constructor (manuel kullanım için)
     public Game(String title, List<String> genre, String developer, String publisher,
                 List<String> platforms, List<String> translators, String steamId,
                 int releaseYear, double playtime, String format, String language,
@@ -44,117 +40,45 @@ public class Game {
         this.imagePath = imagePath;
     }
 
-    // --- Getter ve Setter'lar ---
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getTitle() {
-        return title;
-    }
+    public List<String> getGenre() { return genre; }
+    public void setGenre(List<String> genre) { this.genre = genre; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getDeveloper() { return developer; }
+    public void setDeveloper(String developer) { this.developer = developer; }
 
-    public List<String> getGenre() {
-        return genre;
-    }
+    public String getPublisher() { return publisher; }
+    public void setPublisher(String publisher) { this.publisher = publisher; }
 
-    public void setGenre(List<String> genre) {
-        this.genre = genre;
-    }
+    public List<String> getPlatforms() { return platforms; }
+    public void setPlatforms(List<String> platforms) { this.platforms = platforms; }
 
-    public String getDeveloper() {
-        return developer;
-    }
+    public List<String> getTranslators() { return translators; }
+    public void setTranslators(List<String> translators) { this.translators = translators; }
 
-    public void setDeveloper(String developer) {
-        this.developer = developer;
-    }
+    public String getSteamId() { return steamId; }
+    public void setSteamId(String steamId) { this.steamId = steamId; }
 
-    public String getPublisher() {
-        return publisher;
-    }
+    public int getReleaseYear() { return releaseYear; }
+    public void setReleaseYear(int releaseYear) { this.releaseYear = releaseYear; }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
+    public double getPlaytime() { return playtime; }
+    public void setPlaytime(double playtime) { this.playtime = playtime; }
 
-    public List<String> getPlatforms() {
-        return platforms;
-    }
+    public String getFormat() { return format; }
+    public void setFormat(String format) { this.format = format; }
 
-    public void setPlatforms(List<String> platforms) {
-        this.platforms = platforms;
-    }
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
 
-    public List<String> getTranslators() {
-        return translators;
-    }
+    public double getRating() { return rating; }
+    public void setRating(double rating) { this.rating = rating; }
 
-    public void setTranslators(List<String> translators) {
-        this.translators = translators;
-    }
+    public List<String> getTags() { return tags; }
+    public void setTags(List<String> tags) { this.tags = tags; }
 
-    public String getSteamId() {
-        return steamId;
-    }
-
-    public void setSteamId(String steamId) {
-        this.steamId = steamId;
-    }
-
-    public int getReleaseYear() {
-        return releaseYear;
-    }
-
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
-    }
-
-    public double getPlaytime() {
-        return playtime;
-    }
-
-    public void setPlaytime(double playtime) {
-        this.playtime = playtime;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }

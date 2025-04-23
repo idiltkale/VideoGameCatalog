@@ -13,16 +13,17 @@ import java.util.List;
 
 public class GameFormController {
 
-    @FXML
-    private TextField titleField, developerField, publisherField,
-            genreField, steamIdField, yearField, tagsField;
+    @FXML private TextField titleField;
+    @FXML private TextField developerField;
+    @FXML private TextField publisherField;
+    @FXML private TextField genreField;
+    @FXML private TextField steamIdField;
+    @FXML private TextField yearField;
+    @FXML private TextField tagsField;
+    @FXML private VBox tagBox;
 
     private Game game;
-    @FXML
-    private VBox tagBox;
 
-
-    // Formu düzenleme için açarsak kullanılacak
     public void setGame(Game game) {
         this.game = game;
         if (game != null) {
@@ -38,35 +39,33 @@ public class GameFormController {
                     cb.setSelected(game.getTags().contains(cb.getText()));
                 }
             }
-
-
         }
     }
 
-    // Formdan veri alınıp Game nesnesi oluşturulur
     public Game getGameFromForm() {
         String title = titleField.getText();
         String developer = developerField.getText();
         String publisher = publisherField.getText();
         String genreInput = genreField.getText();
         String steamId = steamIdField.getText();
-        int year = Integer.parseInt(yearField.getText());
+        int year = 0;
+        try {
+            year = Integer.parseInt(yearField.getText());
+        } catch (NumberFormatException e) {
+            year = 0;
+        }
+
         List<String> genres = Arrays.asList(genreInput.split(","));
 
-        String tagInput = tagsField.getText();
         List<String> selectedTags = tagBox.getChildren().stream()
                 .filter(n -> n instanceof CheckBox && ((CheckBox) n).isSelected())
                 .map(n -> ((CheckBox) n).getText())
                 .toList();
 
-
-
-
         if (game == null) {
-            game = new Game(); // yeni oyun eklerken boşsa oluştur
+            game = new Game();
         }
 
-        // Mevcut game nesnesini güncelle ✅
         game.setTags(selectedTags);
         game.setTitle(title);
         game.setDeveloper(developer);
@@ -78,8 +77,6 @@ public class GameFormController {
         return game;
     }
 
-
-    // Kaydet butonuna tıklanınca pencereyi kapat
     @FXML
     private void onSaveClicked() {
         Stage stage = (Stage) titleField.getScene().getWindow();

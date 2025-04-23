@@ -19,6 +19,11 @@ public class GameCatalog {
         return games;
     }
 
+    public void setGames(List<Game> games) {
+        this.games.clear();
+        this.games.addAll(games);
+    }
+
     public List<Game> search(String keyword) {
         String lowerKeyword = keyword.toLowerCase();
 
@@ -34,10 +39,4 @@ public class GameCatalog {
                         (game.getTags() != null && game.getTags().stream().anyMatch(t -> t.toLowerCase().contains(lowerKeyword)))
         ).collect(Collectors.toList());
     }
-
-    public void setGames(List<Game> games) {
-        this.games.clear();
-        this.games.addAll(games);
-    }
-
 }

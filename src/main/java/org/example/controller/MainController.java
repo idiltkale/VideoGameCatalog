@@ -17,36 +17,16 @@ import org.example.model.JSONHandler;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
 
-    @FXML
-    private TableView<Game> gameTable;
+    @FXML private TableView<Game> gameTable;
+    @FXML private TextField searchBar;
 
     private List<String> selectedTagFilters = new ArrayList<>();
-
-    @FXML
-    private TextField searchBar;
-
     private final GameCatalog catalog = new GameCatalog();
     private String activeSearchField = null;
-
-    @FXML
-    private void onHelpClicked() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/help_view.fxml"));
-            Parent root = loader.load();
-            Stage helpStage = new Stage();
-            helpStage.setTitle("Help");
-            helpStage.setScene(new Scene(root));
-            helpStage.initModality(Modality.APPLICATION_MODAL);
-            helpStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void initialize() {
@@ -66,6 +46,16 @@ public class MainController {
             e.printStackTrace();
         }
 
+        gameTable.setRowFactory(tv -> {
+            TableRow<Game> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Game clickedGame = row.getItem();
+                    showGameDetailPopup(clickedGame);
+                }
+            });
+            return row;
+        });
 
         searchBar.setVisible(false);
         searchBar.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -76,24 +66,18 @@ public class MainController {
 
             String input = newVal.toLowerCase();
             List<Game> result = catalog.getGames().stream().filter(game -> {
-                switch (activeSearchField) {
-                    case "Title":
-                        return game.getTitle() != null && game.getTitle().toLowerCase().contains(input);
-                    case "Developer":
-                        return game.getDeveloper() != null && game.getDeveloper().toLowerCase().contains(input);
-                    case "Publisher":
-                        return game.getPublisher() != null && game.getPublisher().toLowerCase().contains(input);
-                    case "Year":
-                        return String.valueOf(game.getReleaseYear()).contains(input);
-                    default:
-                        return false;
-                }
+                return switch (activeSearchField) {
+                    case "Title" -> game.getTitle() != null && game.getTitle().toLowerCase().contains(input);
+                    case "Developer" -> game.getDeveloper() != null && game.getDeveloper().toLowerCase().contains(input);
+                    case "Publisher" -> game.getPublisher() != null && game.getPublisher().toLowerCase().contains(input);
+                    case "Year" -> String.valueOf(game.getReleaseYear()).contains(input);
+                    default -> false;
+                };
             }).toList();
 
             gameTable.getItems().setAll(result);
         });
     }
-
 
     @FXML
     private void onAddGameClicked() {
@@ -161,7 +145,6 @@ public class MainController {
         }
     }
 
-
     @FXML
     private void onFilterByTags() {
         Dialog<List<String>> dialog = new Dialog<>();
@@ -175,7 +158,7 @@ public class MainController {
 
         for (String tag : allTags) {
             CheckBox cb = new CheckBox(tag);
-            if (selectedTagFilters.contains(tag)) cb.setSelected(true); // ✅ Önceki seçimler
+            if (selectedTagFilters.contains(tag)) cb.setSelected(true);
             checkBoxes.add(cb);
             container.getChildren().add(cb);
         }
@@ -195,10 +178,10 @@ public class MainController {
         });
 
         dialog.showAndWait().ifPresent(selectedTags -> {
-            selectedTagFilters = selectedTags; // ✅ Seçimi sakla
+            selectedTagFilters = selectedTags;
 
             if (selectedTags.isEmpty()) {
-                gameTable.getItems().setAll(catalog.getGames()); // ✅ Hepsini göster
+                gameTable.getItems().setAll(catalog.getGames());
                 return;
             }
 
@@ -214,9 +197,6 @@ public class MainController {
             gameTable.getItems().setAll(filtered);
         });
     }
-
-
-
 
     @FXML
     private void onSearchByTitle() {
@@ -238,11 +218,43 @@ public class MainController {
         activateSearch("Year");
     }
 
-
     private void activateSearch(String field) {
         activeSearchField = field;
         searchBar.setPromptText("Search by " + field + "...");
         searchBar.setVisible(true);
         searchBar.clear();
+    }
+
+    private void showGameDetailPopup(Game game) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/game_detail.fxml"));
+            Parent root = loader.load();
+
+            GameDetailController controller = loader.getController();
+            controller.setGame(game);
+
+            Stage detailStage = new Stage();
+            detailStage.setTitle("Game Details - " + game.getTitle());
+            detailStage.setScene(new Scene(root));
+            detailStage.initModality(Modality.APPLICATION_MODAL);
+            detailStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onHelpClicked() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/help_view.fxml"));
+            Parent root = loader.load();
+            Stage helpStage = new Stage();
+            helpStage.setTitle("Help");
+            helpStage.setScene(new Scene(root));
+            helpStage.initModality(Modality.APPLICATION_MODAL);
+            helpStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
