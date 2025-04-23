@@ -23,4 +23,5 @@
     <Label fx:id="languageLabel" />
     <Label fx:id="ratingLabel" />
     <Label fx:id="tagsLabel" />
+
 </VBox>
