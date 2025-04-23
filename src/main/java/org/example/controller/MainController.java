@@ -51,7 +51,15 @@ public class MainController {
         developerCol.setCellValueFactory(new PropertyValueFactory<>("developer"));
 
         gameTable.getColumns().addAll(titleCol, developerCol);
-        gameTable.getItems().setAll(catalog.getGames());
+
+        try {
+            List<Game> loadedGames = JSONHandler.loadGamesFromFile(new File("games.json"));
+            catalog.setGames(loadedGames);
+            gameTable.getItems().setAll(loadedGames);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         searchBar.setVisible(false);
         searchBar.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -79,6 +87,7 @@ public class MainController {
             gameTable.getItems().setAll(result);
         });
     }
+
 
     @FXML
     private void onAddGameClicked() {

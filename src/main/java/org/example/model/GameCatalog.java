@@ -35,8 +35,9 @@ public class GameCatalog {
         ).collect(Collectors.toList());
     }
 
-
-    public void setGames(List<Game> newGames) {
-        this.games = newGames;
+    public void setGames(List<Game> games) {
+        this.games.clear();
+        this.games.addAll(games);
     }
+
 }
