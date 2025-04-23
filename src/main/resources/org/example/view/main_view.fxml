@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<BorderPane fx:controller="org.example.controller.MainController"
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            xmlns="http://javafx.com/javafx">
-
+            fx:controller="org.example.controller.MainController">
     <top>
-        <MenuBar>
-            <menus>
-                <Menu text="File">
-                    <MenuItem text="Import JSON"/>
-                    <MenuItem text="Export JSON"/>
-                </Menu>
-                <Menu text="Edit">
-                    <MenuItem text="Add Game" fx:id="addGameMenu" onAction="#onAddGameClicked"/>
-                    <MenuItem text="Edit" onAction="#onEditGameClicked"/>
-                    <MenuItem text="Delete" onAction="#onDeleteGameClicked"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
 
+            <MenuBar>
+                <menus>
+                    <Menu text="File">
+                        <MenuItem text="Import JSON"/>
+                        <MenuItem text="Export JSON"/>
+                    </Menu>
+                    <Menu text="Edit">
+                        <MenuItem text="Add Game" onAction="#onAddGameClicked"/>
+                        <MenuItem text="Edit" onAction="#onEditGameClicked"/>
+                        <MenuItem text="Delete" onAction="#onDeleteGameClicked"/>
+                    </Menu>
+                    <Menu text="Search">
+                        <MenuItem text="By Title" onAction="#onSearchByTitle"/>
+                        <MenuItem text="By Developer" onAction="#onSearchByDeveloper"/>
+                        <MenuItem text="By Publisher" onAction="#onSearchByPublisher"/>
+                        <MenuItem text="By Year" onAction="#onSearchByYear"/>
+                    </Menu>
+                    <Menu text="Help">
+                        <MenuItem text="View Help" onAction="#onHelpClicked"/>
+                    </Menu>
+                </menus>
+            </MenuBar>
 
-                </Menu>
-                <Menu text="Help">
-                    <MenuItem text="View Help" onAction="#onHelpClicked"/>
-                </Menu>
-
-            </menus>
-        </MenuBar>
+            <Region HBox.hgrow="ALWAYS"/> <!-- Boşluk bırakır, sağa iter -->
+            <TextField fx:id="searchBar" promptText="Search..." visible="false" />
+        </HBox>
     </top>
 
-    <center>
-        <TextField fx:id="searchBar" promptText="Search..."/>
 
+
+    <center>
+        <TableView fx:id="gameTable" prefHeight="400.0" prefWidth="600.0"/>
     </center>
 
-    <bottom>
-        <TableView fx:id="gameTable"/>
-    </bottom>
 </BorderPane>
