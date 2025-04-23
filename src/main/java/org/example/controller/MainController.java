@@ -2,10 +2,12 @@ package org.example.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.model.Game;
@@ -14,12 +16,16 @@ import org.example.model.JSONHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
 
     @FXML
     private TableView<Game> gameTable;
+
+    private List<String> selectedTagFilters = new ArrayList<>();
 
     @FXML
     private TextField searchBar;
@@ -154,6 +160,63 @@ public class MainController {
             }
         }
     }
+
+
+    @FXML
+    private void onFilterByTags() {
+        Dialog<List<String>> dialog = new Dialog<>();
+        dialog.setTitle("Filter by Tags");
+
+        VBox container = new VBox(10);
+        container.setPadding(new Insets(10));
+
+        String[] allTags = {"RPG", "Turn-based", "Multiplayer", "Shooter", "Adventure", "Strategy"};
+        List<CheckBox> checkBoxes = new ArrayList<>();
+
+        for (String tag : allTags) {
+            CheckBox cb = new CheckBox(tag);
+            if (selectedTagFilters.contains(tag)) cb.setSelected(true); // ✅ Önceki seçimler
+            checkBoxes.add(cb);
+            container.getChildren().add(cb);
+        }
+
+        ButtonType filterButtonType = new ButtonType("Filter", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(filterButtonType, ButtonType.CANCEL);
+        dialog.getDialogPane().setContent(container);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == filterButtonType) {
+                return checkBoxes.stream()
+                        .filter(CheckBox::isSelected)
+                        .map(CheckBox::getText)
+                        .toList();
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(selectedTags -> {
+            selectedTagFilters = selectedTags; // ✅ Seçimi sakla
+
+            if (selectedTags.isEmpty()) {
+                gameTable.getItems().setAll(catalog.getGames()); // ✅ Hepsini göster
+                return;
+            }
+
+            List<Game> filtered = catalog.getGames().stream().filter(game ->
+                    game.getTags() != null &&
+                            selectedTags.stream().allMatch(tag ->
+                                    game.getTags().stream()
+                                            .map(String::toLowerCase)
+                                            .anyMatch(g -> g.contains(tag.toLowerCase()))
+                            )
+            ).toList();
+
+            gameTable.getItems().setAll(filtered);
+        });
+    }
+
+
+
 
     @FXML
     private void onSearchByTitle() {

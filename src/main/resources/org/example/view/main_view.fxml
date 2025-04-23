@@ -33,6 +33,10 @@
                     <Menu text="Help">
                         <MenuItem text="View Help" onAction="#onHelpClicked"/>
                     </Menu>
+                    <Menu text="Tags">
+                        <MenuItem text="Filter by Tag(s)" onAction="#onFilterByTags"/>
+                    </Menu>
+
                 </menus>
             </MenuBar>
 

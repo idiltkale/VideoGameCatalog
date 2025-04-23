@@ -18,6 +18,8 @@ public class Game {
     private List<String> tags;
     private String imagePath;
 
+
+
     // Boş constructor (JSON için gerekli)
     public Game() {}
 
