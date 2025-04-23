@@ -20,10 +20,21 @@ public class GameCatalog {
     }
 
     public List<Game> search(String keyword) {
-        return games.stream()
-                .filter(game -> game.getTitle().toLowerCase().contains(keyword.toLowerCase()))
-                .collect(Collectors.toList());
+        String lowerKeyword = keyword.toLowerCase();
+
+        return games.stream().filter(game ->
+                (game.getTitle() != null && game.getTitle().toLowerCase().contains(lowerKeyword)) ||
+                        (game.getDeveloper() != null && game.getDeveloper().toLowerCase().contains(lowerKeyword)) ||
+                        (game.getPublisher() != null && game.getPublisher().toLowerCase().contains(lowerKeyword)) ||
+                        (game.getSteamId() != null && game.getSteamId().toLowerCase().contains(lowerKeyword)) ||
+                        (String.valueOf(game.getReleaseYear()).contains(lowerKeyword)) ||
+                        (game.getGenre() != null && game.getGenre().stream().anyMatch(g -> g.toLowerCase().contains(lowerKeyword))) ||
+                        (game.getPlatforms() != null && game.getPlatforms().stream().anyMatch(p -> p.toLowerCase().contains(lowerKeyword))) ||
+                        (game.getLanguage() != null && game.getLanguage().toLowerCase().contains(lowerKeyword)) ||
+                        (game.getTags() != null && game.getTags().stream().anyMatch(t -> t.toLowerCase().contains(lowerKeyword)))
+        ).collect(Collectors.toList());
     }
+
 
     public void setGames(List<Game> newGames) {
         this.games = newGames;

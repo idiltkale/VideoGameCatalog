@@ -58,6 +58,7 @@ public class MainController {
         searchBar.textProperty().addListener((obs, oldText, newText) -> {
             gameTable.getItems().setAll(catalog.search(newText));
         });
+
     }
 
 
@@ -88,6 +89,50 @@ public class MainController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void onEditGameClicked() {
+        Game selectedGame = gameTable.getSelectionModel().getSelectedItem();
+        if (selectedGame == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/game_form.fxml"));
+            Parent root = loader.load();
+
+            GameFormController controller = loader.getController();
+            controller.setGame(selectedGame); // Formu doldur
+
+            Stage formStage = new Stage();
+            formStage.setTitle("Edit Game");
+            formStage.setScene(new Scene(root));
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.showAndWait();
+
+            // Güncellenmiş oyunu al (aynı referansa sahip)
+            Game updatedGame = controller.getGameFromForm();
+
+            if (updatedGame != null) {
+                gameTable.refresh(); // sadece güncelle
+                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onDeleteGameClicked() {
+        Game selectedGame = gameTable.getSelectionModel().getSelectedItem();
+        if (selectedGame != null) {
+            catalog.removeGame(selectedGame);
+            gameTable.getItems().remove(selectedGame);
+            try {
+                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
 }

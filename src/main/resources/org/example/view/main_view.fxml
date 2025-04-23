@@ -20,8 +20,9 @@
                 </Menu>
                 <Menu text="Edit">
                     <MenuItem text="Add Game" fx:id="addGameMenu" onAction="#onAddGameClicked"/>
-                    <MenuItem text="Edit Game"/>
-                    <MenuItem text="Delete Game"/>
+                    <MenuItem text="Edit" onAction="#onEditGameClicked"/>
+                    <MenuItem text="Delete" onAction="#onDeleteGameClicked"/>
+
 
                 </Menu>
                 <Menu text="Help">
@@ -33,10 +34,11 @@
     </top>
 
     <center>
-        <TableView fx:id="gameTable"/>
+        <TextField fx:id="searchBar" promptText="Search..."/>
+
     </center>
 
     <bottom>
-        <TextField fx:id="searchBar" promptText="Search..."/>
+        <TableView fx:id="gameTable"/>
     </bottom>
 </BorderPane>
