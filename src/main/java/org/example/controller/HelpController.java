@@ -7,7 +7,6 @@ public class HelpController {
 
     @FXML
     public void initialize() {
-        // Yardım penceresi açıldığında çalışacak.
         System.out.println("Help view initialized!");
     }
 }
