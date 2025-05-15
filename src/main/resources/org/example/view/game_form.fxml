@@ -7,14 +7,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.CheckBox?>
+
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="org.example.controller.GameFormController"
           alignment="center" hgap="10" vgap="10">
+
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
-
 
     <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
     <TextField fx:id="titleField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
@@ -28,14 +29,32 @@
     <Label text="Genres (comma-separated):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
     <TextField fx:id="genreField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-    <Label text="Steam ID:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-    <TextField fx:id="steamIdField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <Label text="Platforms (comma-separated):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <TextField fx:id="platformsField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-    <Label text="Release Year:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-    <TextField fx:id="yearField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    <Label text="Translators (comma-separated):" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+    <TextField fx:id="translatorsField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-    <Label text="Tags:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-    <VBox fx:id="tagBox" GridPane.rowIndex="6" GridPane.columnIndex="1" spacing="5">
+    <Label text="Steam ID:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <TextField fx:id="steamIdField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+    <Label text="Release Year:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+    <TextField fx:id="yearField" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+    <Label text="Playtime (hours):" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+    <TextField fx:id="playtimeField" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+    <Label text="Format:" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+    <TextField fx:id="formatField" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+
+    <Label text="Language:" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+    <TextField fx:id="languageField" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+
+    <Label text="Rating (0.0 - 10.0):" GridPane.rowIndex="11" GridPane.columnIndex="0"/>
+    <TextField fx:id="ratingField" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
+
+    <Label text="Tags:" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
+    <VBox fx:id="tagBox" spacing="5" GridPane.rowIndex="12" GridPane.columnIndex="1">
         <CheckBox text="RPG"/>
         <CheckBox text="Turn-based"/>
         <CheckBox text="Multiplayer"/>
@@ -44,11 +63,9 @@
         <CheckBox text="Strategy"/>
     </VBox>
 
-
-
     <Button text="Save"
-            onAction="#onSaveClicked"
-            GridPane.rowIndex="6"
+            onAction="#onSave"
+            GridPane.rowIndex="13"
             GridPane.columnIndex="1"
             GridPane.halignment="RIGHT"/>
 </GridPane>

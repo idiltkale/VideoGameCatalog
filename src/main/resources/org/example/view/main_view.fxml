@@ -8,15 +8,15 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.controller.MainController">
 
-    <!-- Üst Menü + Arama Alanı -->
     <top>
         <VBox spacing="10">
-            <!-- Menü Çubuğu -->
             <MenuBar>
                 <Menu text="File">
-                    <MenuItem text="Add Game" onAction="#onAddGameClicked"/>
-                    <MenuItem text="Edit Game" onAction="#onEditGameClicked"/>
-                    <MenuItem text="Delete Game" onAction="#onDeleteGameClicked"/>
+                    <MenuItem text="Import" onAction="#onImport"/>
+                    <MenuItem text="Export" onAction="#onExport"/>
+                </Menu>
+                <Menu text="Edit">
+                    <MenuItem text="Edit Selected Game" onAction="#onEditGameClicked"/>
                 </Menu>
                 <Menu text="Help">
                     <MenuItem text="About" onAction="#onHelpClicked"/>
@@ -26,18 +26,17 @@
                 </Menu>
             </MenuBar>
 
-            <!-- Arama Kutusu -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
                 <ComboBox fx:id="searchFieldCombo" prefWidth="150" promptText="Search by"/>
-                <TextField fx:id="searchBar" prefWidth="600" promptText="Enter search text..."/>
+                <TextField fx:id="searchBar" prefWidth="500" promptText="Enter search text..."/>
+                <Button text="➕ Add Game" onAction="#onAddGameClicked"/>
             </HBox>
         </VBox>
     </top>
 
-    <!-- Oyun Tablosu -->
     <center>
         <TableView fx:id="gameTable" prefHeight="600.0" prefWidth="800.0"/>
     </center>
