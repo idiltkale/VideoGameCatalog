@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -22,6 +23,7 @@ import java.util.List;
 public class MainController {
 
     @FXML private TableView<Game> gameTable;
+    @FXML private ComboBox<String> searchFieldCombo;
     @FXML private TextField searchBar;
 
     private List<String> selectedTagFilters = new ArrayList<>();
@@ -36,7 +38,96 @@ public class MainController {
         TableColumn<Game, String> developerCol = new TableColumn<>("Developer");
         developerCol.setCellValueFactory(new PropertyValueFactory<>("developer"));
 
-        gameTable.getColumns().addAll(titleCol, developerCol);
+        TableColumn<Game, String> publisherCol = new TableColumn<>("Publisher");
+        publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+
+        TableColumn<Game, String> genreCol = new TableColumn<>("Genre");
+        genreCol.setCellValueFactory(cellData -> {
+            List<String> genres = cellData.getValue().getGenre();
+            return new ReadOnlyStringWrapper(genres != null ? String.join(", ", genres) : "-");
+        });
+
+        TableColumn<Game, String> platformsCol = new TableColumn<>("Platforms");
+        platformsCol.setCellValueFactory(cellData -> {
+            List<String> platforms = cellData.getValue().getPlatforms();
+            return new ReadOnlyStringWrapper(platforms != null ? String.join(", ", platforms) : "-");
+        });
+
+        TableColumn<Game, String> translatorsCol = new TableColumn<>("Translators");
+        translatorsCol.setCellValueFactory(cellData -> {
+            List<String> translators = cellData.getValue().getTranslators();
+            return new ReadOnlyStringWrapper(translators != null ? String.join(", ", translators) : "-");
+        });
+
+        TableColumn<Game, String> steamIdCol = new TableColumn<>("Steam ID");
+        steamIdCol.setCellValueFactory(new PropertyValueFactory<>("steamId"));
+
+        TableColumn<Game, Integer> yearCol = new TableColumn<>("Release Year");
+        yearCol.setCellValueFactory(new PropertyValueFactory<>("releaseYear"));
+
+        TableColumn<Game, Double> playtimeCol = new TableColumn<>("Playtime");
+        playtimeCol.setCellValueFactory(new PropertyValueFactory<>("playtime"));
+
+        TableColumn<Game, String> formatCol = new TableColumn<>("Format");
+        formatCol.setCellValueFactory(new PropertyValueFactory<>("format"));
+
+        TableColumn<Game, String> languageCol = new TableColumn<>("Language");
+        languageCol.setCellValueFactory(new PropertyValueFactory<>("language"));
+
+        TableColumn<Game, Double> ratingCol = new TableColumn<>("Rating");
+        ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
+
+        TableColumn<Game, String> tagsCol = new TableColumn<>("Tags");
+        tagsCol.setCellValueFactory(cellData -> {
+            List<String> tags = cellData.getValue().getTags();
+            return new ReadOnlyStringWrapper(tags != null ? String.join(", ", tags) : "-");
+        });
+
+        gameTable.getColumns().addAll(
+                titleCol, developerCol, publisherCol, genreCol, platformsCol, translatorsCol,
+                steamIdCol, yearCol, playtimeCol, formatCol, languageCol, ratingCol, tagsCol
+        );
+
+        // Search combo options
+        searchFieldCombo.getItems().addAll(
+                "Title", "Developer", "Publisher", "Genre", "Platforms", "Translators",
+                "Steam ID", "Release Year", "Playtime", "Format", "Language", "Rating", "Tags"
+        );
+        searchFieldCombo.getSelectionModel().selectFirst();
+        activeSearchField = searchFieldCombo.getValue();
+
+        searchFieldCombo.setOnAction(e -> {
+            activeSearchField = searchFieldCombo.getValue();
+        });
+
+        searchBar.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (activeSearchField == null || newVal.isBlank()) {
+                gameTable.getItems().setAll(catalog.getGames());
+                return;
+            }
+
+            String input = newVal.toLowerCase();
+            List<Game> result = catalog.getGames().stream().filter(game -> {
+                return switch (activeSearchField) {
+                    case "Title" -> game.getTitle() != null && game.getTitle().toLowerCase().contains(input);
+                    case "Developer" -> game.getDeveloper() != null && game.getDeveloper().toLowerCase().contains(input);
+                    case "Publisher" -> game.getPublisher() != null && game.getPublisher().toLowerCase().contains(input);
+                    case "Genre" -> game.getGenre() != null && game.getGenre().stream().anyMatch(g -> g.toLowerCase().contains(input));
+                    case "Platforms" -> game.getPlatforms() != null && game.getPlatforms().stream().anyMatch(p -> p.toLowerCase().contains(input));
+                    case "Translators" -> game.getTranslators() != null && game.getTranslators().stream().anyMatch(t -> t.toLowerCase().contains(input));
+                    case "Steam ID" -> game.getSteamId() != null && game.getSteamId().toLowerCase().contains(input);
+                    case "Release Year" -> String.valueOf(game.getReleaseYear()).contains(input);
+                    case "Playtime" -> String.valueOf(game.getPlaytime()).contains(input);
+                    case "Format" -> game.getFormat() != null && game.getFormat().toLowerCase().contains(input);
+                    case "Language" -> game.getLanguage() != null && game.getLanguage().toLowerCase().contains(input);
+                    case "Rating" -> String.valueOf(game.getRating()).contains(input);
+                    case "Tags" -> game.getTags() != null && game.getTags().stream().anyMatch(tag -> tag.toLowerCase().contains(input));
+                    default -> false;
+                };
+            }).toList();
+
+            gameTable.getItems().setAll(result);
+        });
 
         try {
             List<Game> loadedGames = JSONHandler.loadGamesFromFile(new File("games.json"));
@@ -55,27 +146,6 @@ public class MainController {
                 }
             });
             return row;
-        });
-
-        searchBar.setVisible(false);
-        searchBar.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (activeSearchField == null || newVal.isBlank()) {
-                gameTable.getItems().setAll(catalog.getGames());
-                return;
-            }
-
-            String input = newVal.toLowerCase();
-            List<Game> result = catalog.getGames().stream().filter(game -> {
-                return switch (activeSearchField) {
-                    case "Title" -> game.getTitle() != null && game.getTitle().toLowerCase().contains(input);
-                    case "Developer" -> game.getDeveloper() != null && game.getDeveloper().toLowerCase().contains(input);
-                    case "Publisher" -> game.getPublisher() != null && game.getPublisher().toLowerCase().contains(input);
-                    case "Year" -> String.valueOf(game.getReleaseYear()).contains(input);
-                    default -> false;
-                };
-            }).toList();
-
-            gameTable.getItems().setAll(result);
         });
     }
 
@@ -101,47 +171,6 @@ public class MainController {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void onEditGameClicked() {
-        Game selectedGame = gameTable.getSelectionModel().getSelectedItem();
-        if (selectedGame == null) return;
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/game_form.fxml"));
-            Parent root = loader.load();
-            GameFormController controller = loader.getController();
-            controller.setGame(selectedGame);
-
-            Stage formStage = new Stage();
-            formStage.setTitle("Edit Game");
-            formStage.setScene(new Scene(root));
-            formStage.initModality(Modality.APPLICATION_MODAL);
-            formStage.showAndWait();
-
-            Game updatedGame = controller.getGameFromForm();
-            if (updatedGame != null) {
-                gameTable.refresh();
-                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void onDeleteGameClicked() {
-        Game selectedGame = gameTable.getSelectionModel().getSelectedItem();
-        if (selectedGame != null) {
-            catalog.removeGame(selectedGame);
-            gameTable.getItems().remove(selectedGame);
-            try {
-                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -199,30 +228,44 @@ public class MainController {
     }
 
     @FXML
-    private void onSearchByTitle() {
-        activateSearch("Title");
+    private void onEditGameClicked() {
+        Game selectedGame = gameTable.getSelectionModel().getSelectedItem();
+        if (selectedGame == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/game_form.fxml"));
+            Parent root = loader.load();
+            GameFormController controller = loader.getController();
+            controller.setGame(selectedGame);
+
+            Stage formStage = new Stage();
+            formStage.setTitle("Edit Game");
+            formStage.setScene(new Scene(root));
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.showAndWait();
+
+            Game updatedGame = controller.getGameFromForm();
+            if (updatedGame != null) {
+                gameTable.refresh();
+                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    private void onSearchByDeveloper() {
-        activateSearch("Developer");
-    }
-
-    @FXML
-    private void onSearchByPublisher() {
-        activateSearch("Publisher");
-    }
-
-    @FXML
-    private void onSearchByYear() {
-        activateSearch("Year");
-    }
-
-    private void activateSearch(String field) {
-        activeSearchField = field;
-        searchBar.setPromptText("Search by " + field + "...");
-        searchBar.setVisible(true);
-        searchBar.clear();
+    private void onDeleteGameClicked() {
+        Game selectedGame = gameTable.getSelectionModel().getSelectedItem();
+        if (selectedGame != null) {
+            catalog.removeGame(selectedGame);
+            gameTable.getItems().remove(selectedGame);
+            try {
+                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showGameDetailPopup(Game game) {

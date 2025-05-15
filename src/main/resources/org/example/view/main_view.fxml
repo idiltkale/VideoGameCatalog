@@ -2,53 +2,44 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
+
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.controller.MainController">
+
+    <!-- Üst Menü + Arama Alanı -->
     <top>
-        <HBox spacing="10" alignment="CENTER_LEFT">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-
+        <VBox spacing="10">
+            <!-- Menü Çubuğu -->
             <MenuBar>
-                <menus>
-                    <Menu text="File">
-                        <MenuItem text="Import JSON"/>
-                        <MenuItem text="Export JSON"/>
-                    </Menu>
-                    <Menu text="Edit">
-                        <MenuItem text="Add Game" onAction="#onAddGameClicked"/>
-                        <MenuItem text="Edit" onAction="#onEditGameClicked"/>
-                        <MenuItem text="Delete" onAction="#onDeleteGameClicked"/>
-                    </Menu>
-                    <Menu text="Search">
-                        <MenuItem text="By Title" onAction="#onSearchByTitle"/>
-                        <MenuItem text="By Developer" onAction="#onSearchByDeveloper"/>
-                        <MenuItem text="By Publisher" onAction="#onSearchByPublisher"/>
-                        <MenuItem text="By Year" onAction="#onSearchByYear"/>
-                    </Menu>
-                    <Menu text="Help">
-                        <MenuItem text="View Help" onAction="#onHelpClicked"/>
-                    </Menu>
-                    <Menu text="Tags">
-                        <MenuItem text="Filter by Tag(s)" onAction="#onFilterByTags"/>
-                    </Menu>
-
-                </menus>
+                <Menu text="File">
+                    <MenuItem text="Add Game" onAction="#onAddGameClicked"/>
+                    <MenuItem text="Edit Game" onAction="#onEditGameClicked"/>
+                    <MenuItem text="Delete Game" onAction="#onDeleteGameClicked"/>
+                </Menu>
+                <Menu text="Help">
+                    <MenuItem text="About" onAction="#onHelpClicked"/>
+                </Menu>
+                <Menu text="Tags">
+                    <MenuItem text="Filter by Tags" onAction="#onFilterByTags"/>
+                </Menu>
             </MenuBar>
 
-            <Region HBox.hgrow="ALWAYS"/> <!-- Boşluk bırakır, sağa iter -->
-            <TextField fx:id="searchBar" promptText="Search..." visible="false" />
-        </HBox>
+            <!-- Arama Kutusu -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                <ComboBox fx:id="searchFieldCombo" prefWidth="150" promptText="Search by"/>
+                <TextField fx:id="searchBar" prefWidth="600" promptText="Enter search text..."/>
+            </HBox>
+        </VBox>
     </top>
 
-
-
+    <!-- Oyun Tablosu -->
     <center>
-        <TableView fx:id="gameTable" prefHeight="400.0" prefWidth="600.0"/>
+        <TableView fx:id="gameTable" prefHeight="600.0" prefWidth="800.0"/>
     </center>
 
 </BorderPane>
