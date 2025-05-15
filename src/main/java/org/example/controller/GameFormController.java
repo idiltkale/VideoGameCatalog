@@ -1,4 +1,3 @@
-// === GameFormController.java ===
 package org.example.controller;
 
 import javafx.fxml.FXML;
@@ -6,9 +5,11 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.example.model.Game;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ public class GameFormController {
     @FXML private VBox tagBox;
 
     private Game game;
+    private File selectedImageFile;
 
     public void setGame(Game game) {
         this.game = game;
@@ -52,21 +54,37 @@ public class GameFormController {
                     cb.setSelected(game.getTags().contains(cb.getText()));
                 }
             }
+
+            if (game.getImagePath() != null && !game.getImagePath().isBlank()) {
+                selectedImageFile = new File(game.getImagePath());
+            }
+        }
+    }
+
+    @FXML
+    private void onChooseImageClicked() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Game Image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        Stage stage = (Stage) titleField.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            selectedImageFile = file;
         }
     }
 
     @FXML
     private void onSave() {
-        game = new Game();
+        if (game == null) {
+            game = new Game();
+        }
 
         game.setTitle(titleField.getText());
         game.setDeveloper(developerField.getText());
         game.setPublisher(publisherField.getText());
-
         game.setGenre(splitByComma(genreField.getText()));
         game.setPlatforms(splitByComma(platformsField.getText()));
         game.setTranslators(splitByComma(translatorsField.getText()));
-
         game.setSteamId(steamIdField.getText());
 
         try {
@@ -95,6 +113,10 @@ public class GameFormController {
                 .map(node -> ((CheckBox) node).getText())
                 .collect(Collectors.toList());
         game.setTags(selectedTags);
+
+        if (selectedImageFile != null) {
+            game.setImagePath(selectedImageFile.getAbsolutePath());
+        }
 
         Stage stage = (Stage) titleField.getScene().getWindow();
         stage.close();

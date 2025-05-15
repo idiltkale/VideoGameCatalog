@@ -30,15 +30,18 @@
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
-                <ComboBox fx:id="searchFieldCombo" prefWidth="150" promptText="Search by"/>
-                <TextField fx:id="searchBar" prefWidth="500" promptText="Enter search text..."/>
+
+                <Label text="Search by:"/>
+                <ComboBox fx:id="searchFieldCombo" prefWidth="150" promptText="Field"/>
+                <TextField fx:id="searchBar" promptText="Enter search text..." HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS"/>
                 <Button text="➕ Add Game" onAction="#onAddGameClicked"/>
             </HBox>
         </VBox>
     </top>
 
     <center>
-        <TableView fx:id="gameTable" prefHeight="600.0" prefWidth="800.0"/>
+        <TableView fx:id="gameTable" prefHeight="600.0" prefWidth="1000.0"/>
     </center>
 
 </BorderPane>

@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -32,6 +35,21 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        TableColumn<Game, ImageView> imageCol = new TableColumn<>("Image");
+        imageCol.setPrefWidth(80); // Genişlik artırıldı
+
+        imageCol.setCellValueFactory(data -> {
+            String path = data.getValue().getImagePath();
+            ImageView view = new ImageView();
+            if (path != null && !path.isBlank()) {
+                File file = new File(path);
+                if (file.exists()) {
+                    view.setImage(new Image(file.toURI().toString(), 100, 100, true, true));
+                }
+            }
+            return new ReadOnlyObjectWrapper<>(view);
+        });
+
         TableColumn<Game, String> titleCol = new TableColumn<>("Title");
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 
@@ -91,7 +109,7 @@ public class MainController {
         });
 
         gameTable.getColumns().addAll(
-                titleCol, developerCol, publisherCol, genreCol, platformsCol, translatorsCol,
+                imageCol, titleCol, developerCol, publisherCol, genreCol, platformsCol, translatorsCol,
                 steamIdCol, yearCol, playtimeCol, formatCol, languageCol, ratingCol, tagsCol, deleteCol
         );
 
@@ -141,7 +159,13 @@ public class MainController {
         }
 
         gameTable.setRowFactory(tv -> {
-            TableRow<Game> row = new TableRow<>();
+            TableRow<Game> row = new TableRow<>(){
+            @Override
+            protected void updateItem(Game item, boolean empty) {
+                super.updateItem(item, empty);
+                setPrefHeight(60);  // satır yüksekliği artırıldı
+            }
+        };
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Game clickedGame = row.getItem();
