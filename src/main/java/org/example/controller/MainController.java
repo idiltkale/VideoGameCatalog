@@ -11,7 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.model.Game;
@@ -36,8 +38,7 @@ public class MainController {
     @FXML
     public void initialize() {
         TableColumn<Game, ImageView> imageCol = new TableColumn<>("Image");
-        imageCol.setPrefWidth(80); // Genişlik artırıldı
-
+        imageCol.setPrefWidth(80);
         imageCol.setCellValueFactory(data -> {
             String path = data.getValue().getImagePath();
             ImageView view = new ImageView();
@@ -60,9 +61,26 @@ public class MainController {
         publisherCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
 
         TableColumn<Game, String> genreCol = createListColumn("Genre", Game::getGenre);
+        genreCol.setCellFactory(tc -> {
+            TableCell<Game, String> cell = new TableCell<>() {
+                private final Label label = new Label();
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                    } else {
+                        label.setText(item.replace(", ", ",\n"));
+                        label.setWrapText(true);
+                        setGraphic(label);
+                    }
+                }
+            };
+            return cell;
+        });
+
         TableColumn<Game, String> platformsCol = createListColumn("Platforms", Game::getPlatforms);
         TableColumn<Game, String> translatorsCol = createListColumn("Translators", Game::getTranslators);
-
         TableColumn<Game, String> steamIdCol = new TableColumn<>("Steam ID");
         steamIdCol.setCellValueFactory(new PropertyValueFactory<>("steamId"));
 
@@ -80,27 +98,59 @@ public class MainController {
 
         TableColumn<Game, Double> ratingCol = new TableColumn<>("Rating");
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        ratingCol.setCellFactory(col -> new TableCell<>() {
+            private final HBox box = new HBox(2);
+            @Override
+            protected void updateItem(Double rating, boolean empty) {
+                super.updateItem(rating, empty);
+                if (empty || rating == null) {
+                    setGraphic(null);
+                } else {
+                    box.getChildren().clear();
+                    int stars = (int) Math.round(rating);
+                    for (int i = 1; i <= 5; i++) {
+                        Image img = new Image(getClass().getResourceAsStream(
+                                i <= stars ? "/filled-star.png" : "/empty-star.png"
+                        ));
+                        ImageView view = new ImageView(img);
+                        view.setFitWidth(16);
+                        view.setFitHeight(16);
+                        box.getChildren().add(view);
+                    }
+                    setGraphic(box);
+                }
+            }
+        });
 
         TableColumn<Game, String> tagsCol = createListColumn("Tags", Game::getTags);
 
         TableColumn<Game, Void> deleteCol = new TableColumn<>("🗑");
         deleteCol.setCellFactory(col -> new TableCell<>() {
             private final Button deleteButton = new Button("🗑");
-
             {
                 deleteButton.setOnAction(e -> {
                     Game game = getTableView().getItems().get(getIndex());
-                    catalog.removeGame(game);
-                    gameTable.getItems().remove(game);
-                    try {
-                        JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirm Deletion");
+                    alert.setHeaderText("Are you sure you want to delete this game?");
+                    alert.setContentText("Game: " + game.getTitle());
+                    ButtonType yesButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+                    ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+                    alert.getButtonTypes().setAll(yesButton, noButton);
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == yesButton) {
+                            catalog.removeGame(game);
+                            gameTable.getItems().remove(game);
+                            try {
+                                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
                 });
                 deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
             }
-
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -126,7 +176,6 @@ public class MainController {
                 gameTable.getItems().setAll(catalog.getGames());
                 return;
             }
-
             String input = newVal.toLowerCase();
             List<Game> result = catalog.getGames().stream().filter(game -> {
                 return switch (activeSearchField) {
@@ -146,7 +195,6 @@ public class MainController {
                     default -> false;
                 };
             }).toList();
-
             gameTable.getItems().setAll(result);
         });
 
@@ -160,12 +208,12 @@ public class MainController {
 
         gameTable.setRowFactory(tv -> {
             TableRow<Game> row = new TableRow<>(){
-            @Override
-            protected void updateItem(Game item, boolean empty) {
-                super.updateItem(item, empty);
-                setPrefHeight(60);  // satır yüksekliği artırıldı
-            }
-        };
+                @Override
+                protected void updateItem(Game item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setPrefHeight(60);
+                }
+            };
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Game clickedGame = row.getItem();
@@ -209,6 +257,59 @@ public class MainController {
             e.printStackTrace();
         }
     }
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
+    @FXML
+    private void onExport() {
+        Game selectedGame = gameTable.getSelectionModel().getSelectedItem();
+        if (selectedGame == null) {
+            showAlert("No Selection", "Please select a game to export.");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export Game");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files", "*.json"));
+        fileChooser.setInitialFileName(selectedGame.getTitle().replaceAll("\\s+", "_") + ".json");
+
+        File saveFile = fileChooser.showSaveDialog(gameTable.getScene().getWindow());
+        if (saveFile != null) {
+            try {
+                JSONHandler.saveGamesToFile(List.of(selectedGame), saveFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Export Failed", "Could not export game to file.");
+            }
+        }
+    }
+
+    @FXML
+    private void onImport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Game(s)");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files", "*.json"));
+        File selectedFile = fileChooser.showOpenDialog(gameTable.getScene().getWindow());
+
+        if (selectedFile != null) {
+            try {
+                List<Game> importedGames = JSONHandler.loadGamesFromFile(selectedFile);
+                catalog.getGames().addAll(importedGames);
+                gameTable.getItems().addAll(importedGames);
+                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json")); // save merged
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Import Failed", "Could not import games from file.");
+            }
+        }
+    }
+
 
     @FXML
     private void onEditGameClicked() {
@@ -255,24 +356,19 @@ public class MainController {
     private void onFilterByTags() {
         Dialog<List<String>> dialog = new Dialog<>();
         dialog.setTitle("Filter by Tags");
-
         VBox container = new VBox(10);
         container.setPadding(new Insets(10));
-
         String[] allTags = {"RPG", "Turn-based", "Multiplayer", "Shooter", "Adventure", "Strategy"};
         List<CheckBox> checkBoxes = new ArrayList<>();
-
         for (String tag : allTags) {
             CheckBox cb = new CheckBox(tag);
             if (selectedTagFilters.contains(tag)) cb.setSelected(true);
             checkBoxes.add(cb);
             container.getChildren().add(cb);
         }
-
         ButtonType filterButtonType = new ButtonType("Filter", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(filterButtonType, ButtonType.CANCEL);
         dialog.getDialogPane().setContent(container);
-
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == filterButtonType) {
                 return checkBoxes.stream()
@@ -282,7 +378,6 @@ public class MainController {
             }
             return null;
         });
-
         dialog.showAndWait().ifPresent(selectedTags -> {
             selectedTagFilters = selectedTags;
 
@@ -290,7 +385,6 @@ public class MainController {
                 gameTable.getItems().setAll(catalog.getGames());
                 return;
             }
-
             List<Game> filtered = catalog.getGames().stream().filter(game ->
                     game.getTags() != null &&
                             selectedTags.stream().allMatch(tag ->
@@ -299,7 +393,6 @@ public class MainController {
                                             .anyMatch(g -> g.contains(tag.toLowerCase()))
                             )
             ).toList();
-
             gameTable.getItems().setAll(filtered);
         });
     }
@@ -312,35 +405,12 @@ public class MainController {
         alert.setContentText("Use the Add menu to add a new game.\nUse the File menu to import/export games.\nSearch by selecting a field and typing.");
         alert.showAndWait();
     }
-
-    @FXML
-    private void onImport() {
-        try {
-            List<Game> games = JSONHandler.loadGamesFromFile(new File("games.json"));
-            catalog.setGames(games);
-            gameTable.getItems().setAll(games);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void onExport() {
-        try {
-            JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void showGameDetailPopup(Game game) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/game_detail.fxml"));
             Parent root = loader.load();
-
             GameDetailController controller = loader.getController();
             controller.setGame(game);
-
             Stage detailStage = new Stage();
             detailStage.setTitle("Game Details - " + game.getTitle());
             detailStage.setScene(new Scene(root));
