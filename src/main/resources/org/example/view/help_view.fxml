@@ -4,46 +4,69 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controller.HelpController">
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="org.example.controller.GameFormController"
+          hgap="10" vgap="10" alignment="CENTER"
+          style="-fx-background-color: #fce4ec;">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
 
+    <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="titleField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-<top>
-        <Label text="Help &amp; Guide" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 20;" BorderPane.alignment="CENTER"/>
-    </top>
-    <center>
-        <ScrollPane fitToWidth="true" style="-fx-padding: 20;">
-            <VBox spacing="15" style="-fx-padding: 10;">
-                <children>
-                    <Label text="🔹 Getting Started" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                    <Label wrapText="true" text="To begin using the Game Catalog, click on the 'New Project' button on the home screen. You will be prompted to enter a project name and select a configuration file." />
+    <Label text="Developer:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="developerField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                    <Label text="🔹 Adding a Game" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                    <Label wrapText="true" text="Click the '+' icon or 'Add Game' button. Fill in the required fields such as title, genre, platform, release year, and image. Then press 'Save' to add the game to the catalog." />
+    <Label text="Publisher:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="publisherField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                    <Label text="🔹 Editing or Deleting a Game" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                    <Label wrapText="true" text="Select a game from the list and click 'Edit' to modify its details or 'Delete' to remove it from the catalog. Changes are saved immediately." />
+    <Label text="Genres:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <MenuButton fx:id="genreMenuButton" text="Select Genres" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
-                    <Label text="🔹 Search &amp; Filter" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                    <Label wrapText="true" text="Use the search bar to find games by title, and apply filters based on tags or platforms for more precise results." />
+    <Label fx:id="selectedGenresLabel" text="Selected: None" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-text-fill: #4a148c;"/>
 
-                    <Label text="🔹 Import / Export" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                    <Label wrapText="true" text="Go to the Settings tab to import games from or export them to JSON files. This allows you to save or transfer your catalog easily." />
+    <Label text="Platforms (comma-separated):" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="platformsField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-                    <Label text="🔹 Troubleshooting" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                    <Label wrapText="true" text="If you encounter issues with loading images or configurations, ensure the files are correctly formatted. Check the error messages displayed for guidance." />
+    <Label text="Translators (comma-separated):" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="translatorsField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
 
-                    <Label text="🔹 Need More Help?" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-                    <Label wrapText="true" text="Contact the development team or check the project documentation on GitHub for more detailed support." />
-                </children>
-            </VBox>
-        </ScrollPane>
-    </center>
-    <bottom>
-        <HBox alignment="CENTER" spacing="10" style="-fx-padding: 10;">
-            <children>
-                <Button fx:id="closeButton" text="Close" onAction="#handleClose"
-                        style="-fx-padding: 8 20 8 20; -fx-font-size: 14px;" />
-            </children>
-        </HBox>
-    </bottom>
-</BorderPane>
+    <Label text="Steam ID:" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="steamIdField" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+    <Label text="Release Year:" GridPane.rowIndex="8" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <Button fx:id="yearButton" text="Select Year" onAction="#onYearSelectClicked" GridPane.rowIndex="8" GridPane.columnIndex="1"
+            style="-fx-background-color: #f48fb1; -fx-text-fill: white; -fx-background-radius: 6;" />
+
+    <Label text="Playtime (hours):" GridPane.rowIndex="9" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="playtimeField" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+
+    <Label text="Format:" GridPane.rowIndex="10" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="formatField" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+
+    <Label text="Language:" GridPane.rowIndex="11" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <TextField fx:id="languageField" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
+
+    <Label text="Rating:" GridPane.rowIndex="12" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <HBox fx:id="ratingStarsBox" spacing="5" GridPane.rowIndex="12" GridPane.columnIndex="1"/>
+
+    <Label text="Cover Image:" GridPane.rowIndex="13" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <Button text="Choose Image" onAction="#onChooseImageClicked" GridPane.rowIndex="13" GridPane.columnIndex="1"
+            style="-fx-background-color: #f48fb1; -fx-text-fill: white; -fx-background-radius: 6;" />
+
+    <Label text="Tags:" GridPane.rowIndex="14" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <VBox fx:id="tagBox" spacing="5" GridPane.rowIndex="14" GridPane.columnIndex="1">
+        <CheckBox text="RPG"/>
+        <CheckBox text="Turn-based"/>
+        <CheckBox text="Multiplayer"/>
+        <CheckBox text="Shooter"/>
+        <CheckBox text="Adventure"/>
+        <CheckBox text="Strategy"/>
+    </VBox>
+
+    <Button text="Save" onAction="#onSave"
+            GridPane.rowIndex="15" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
+            style="-fx-background-color: #f06292; -fx-text-fill: white; -fx-padding: 8 20 8 20; -fx-background-radius: 10;" />
+</GridPane>

@@ -9,9 +9,8 @@
             fx:controller="org.example.controller.MainController"
             style="-fx-background-color: #fce4ec;">
 
-
     <top>
-        <VBox spacing="10">
+        <VBox spacing="10" style="-fx-background-color: #fce4ec;">
             <MenuBar>
                 <Menu text="File">
                     <MenuItem text="Import" onAction="#onImport"/>
@@ -33,11 +32,12 @@
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
 
-                <Label text="Search by:"/>
+                <Label text="Search by:" style="-fx-text-fill: #880e4f;"/>
                 <ComboBox fx:id="searchFieldCombo" prefWidth="150" promptText="Field"/>
                 <TextField fx:id="searchBar" promptText="Enter search text..." HBox.hgrow="ALWAYS"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="➕ Add Game" onAction="#onAddGameClicked"/>
+                <Button text="➕ Add Game" onAction="#onAddGameClicked"
+                        style="-fx-background-color: #f06292; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;"/>
             </HBox>
         </VBox>
     </top>

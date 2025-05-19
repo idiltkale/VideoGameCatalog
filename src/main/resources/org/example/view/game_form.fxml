@@ -7,53 +7,56 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="org.example.controller.GameFormController"
-          hgap="10" vgap="10" alignment="CENTER">
+          hgap="10" vgap="10" alignment="CENTER"
+          style="-fx-background-color: #fce4ec;">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <Label text="Title:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="titleField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-    <Label text="Developer:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <Label text="Developer:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="developerField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-    <Label text="Publisher:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <Label text="Publisher:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="publisherField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-    <Label text="Genres:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <Label text="Genres:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <MenuButton fx:id="genreMenuButton" text="Select Genres" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
-    <Label fx:id="selectedGenresLabel" text="Selected: None" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <Label fx:id="selectedGenresLabel" text="Selected: None" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-text-fill: #4a148c;"/>
 
-    <Label text="Platforms (comma-separated):" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+    <Label text="Platforms (comma-separated):" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="platformsField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-    <Label text="Translators (comma-separated):" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <Label text="Translators (comma-separated):" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="translatorsField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
 
-    <Label text="Steam ID:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+    <Label text="Steam ID:" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="steamIdField" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
 
-    <Label text="Release Year:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
-    <Button fx:id="yearButton" text="Select Year" onAction="#onYearSelectClicked" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+    <Label text="Release Year:" GridPane.rowIndex="8" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <Button fx:id="yearButton" text="Select Year" onAction="#onYearSelectClicked" GridPane.rowIndex="8" GridPane.columnIndex="1"
+            style="-fx-background-color: #f48fb1; -fx-text-fill: white; -fx-background-radius: 6;" />
 
-    <Label text="Playtime (hours):" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+    <Label text="Playtime (hours):" GridPane.rowIndex="9" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="playtimeField" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
 
-    <Label text="Format:" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+    <Label text="Format:" GridPane.rowIndex="10" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="formatField" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
 
-    <Label text="Language:" GridPane.rowIndex="11" GridPane.columnIndex="0"/>
+    <Label text="Language:" GridPane.rowIndex="11" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <TextField fx:id="languageField" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
 
-    <Label text="Rating:" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
+    <Label text="Rating:" GridPane.rowIndex="12" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <HBox fx:id="ratingStarsBox" spacing="5" GridPane.rowIndex="12" GridPane.columnIndex="1"/>
 
-    <Label text="Cover Image:" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
-    <Button text="Choose Image" onAction="#onChooseImageClicked" GridPane.rowIndex="13" GridPane.columnIndex="1"/>
+    <Label text="Cover Image:" GridPane.rowIndex="13" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
+    <Button text="Choose Image" onAction="#onChooseImageClicked" GridPane.rowIndex="13" GridPane.columnIndex="1"
+            style="-fx-background-color: #f48fb1; -fx-text-fill: white; -fx-background-radius: 6;" />
 
-    <Label text="Tags:" GridPane.rowIndex="14" GridPane.columnIndex="0"/>
+    <Label text="Tags:" GridPane.rowIndex="14" GridPane.columnIndex="0" style="-fx-text-fill: #880e4f;"/>
     <VBox fx:id="tagBox" spacing="5" GridPane.rowIndex="14" GridPane.columnIndex="1">
         <CheckBox text="RPG"/>
         <CheckBox text="Turn-based"/>
@@ -63,5 +66,7 @@
         <CheckBox text="Strategy"/>
     </VBox>
 
-    <Button text="Save" onAction="#onSave" GridPane.rowIndex="15" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>
+    <Button text="Save" onAction="#onSave"
+            GridPane.rowIndex="15" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
+            style="-fx-background-color: #f06292; -fx-text-fill: white; -fx-padding: 8 20 8 20; -fx-background-radius: 10;" />
 </GridPane>
