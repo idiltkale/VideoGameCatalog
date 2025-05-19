@@ -23,4 +23,9 @@
     <Label fx:id="steamIdLabel" style="-fx-text-fill: #4a148c;" />
     <Label fx:id="releaseYearLabel" style="-fx-text-fill: #4a148c;" />
     <Label fx:id="playtimeLabel" style="-fx-text-fill: #4a148c;" />
-    <Label fx:id="
+    <Label fx:id="formatLabel" style="-fx-text-fill: #4a148c;" />
+    <Label fx:id="languageLabel" style="-fx-text-fill: #4a148c;" />
+    <Label fx:id="ratingLabel" style="-fx-text-fill: #4a148c;" />
+    <Label fx:id="tagsLabel" style="-fx-text-fill: #4a148c;" />
+</VBox>
+
