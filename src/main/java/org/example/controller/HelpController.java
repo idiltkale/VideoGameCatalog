@@ -1,12 +1,22 @@
 package org.example.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 public class HelpController {
 
     @FXML
+    private Button closeButton;
+
+    @FXML
     public void initialize() {
-        System.out.println("Help view initialized!");
+        // Help screen initialization logic if needed
+    }
+
+    @FXML
+    private void handleClose() {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 }

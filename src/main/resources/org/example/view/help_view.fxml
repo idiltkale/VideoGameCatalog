@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.controller.HelpController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controller.HelpController">
 
-</AnchorPane>
+<top>
+        <Label text="Help &amp; Guide" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 20;" BorderPane.alignment="CENTER"/>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-padding: 20;">
+            <VBox spacing="15" style="-fx-padding: 10;">
+                <children>
+                    <Label text="🔹 Getting Started" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label wrapText="true" text="To begin using the Game Catalog, click on the 'New Project' button on the home screen. You will be prompted to enter a project name and select a configuration file." />
+
+                    <Label text="🔹 Adding a Game" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label wrapText="true" text="Click the '+' icon or 'Add Game' button. Fill in the required fields such as title, genre, platform, release year, and image. Then press 'Save' to add the game to the catalog." />
+
+                    <Label text="🔹 Editing or Deleting a Game" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label wrapText="true" text="Select a game from the list and click 'Edit' to modify its details or 'Delete' to remove it from the catalog. Changes are saved immediately." />
+
+                    <Label text="🔹 Search, Filter" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label wrapText="true" text="Use the search bar to find games by title, and apply filters based on tags or platforms for more precise results." />
+
+                    <Label text="🔹 Import / Export" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label wrapText="true" text="Go to the Settings tab to import games from or export them to JSON files. This allows you to save or transfer your catalog easily." />
+
+                    <Label text="🔹 Troubleshooting" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label wrapText="true" text="If you encounter issues with loading images or configurations, ensure the files are correctly formatted. Check the error messages displayed for guidance." />
+
+                    <Label text="🔹 Need More Help?" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label wrapText="true" text="Contact the development team or check the project documentation on GitHub for more detailed support." />
+                </children>
+            </VBox>
+        </ScrollPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" spacing="10" style="-fx-padding: 10;">
+            <children>
+                <Button fx:id="closeButton" text="Close" onAction="#handleClose"
+                        style="-fx-padding: 8 20 8 20; -fx-font-size: 14px;" />
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>

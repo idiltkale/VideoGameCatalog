@@ -264,6 +264,23 @@ public class MainController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    @FXML
+    private void openHelpWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/help_view.fxml"));
+            Parent root = loader.load();
+
+            Stage helpStage = new Stage();
+            helpStage.setTitle("Help");
+            helpStage.setScene(new Scene(root));
+            helpStage.setResizable(false);
+            helpStage.initModality(Modality.APPLICATION_MODAL); // Diğer pencereleri kilitler
+            helpStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @FXML
@@ -289,6 +306,7 @@ public class MainController {
             }
         }
     }
+
 
     @FXML
     private void onImport() {
@@ -399,12 +417,21 @@ public class MainController {
 
     @FXML
     private void onHelpClicked() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Help");
-        alert.setHeaderText("Video Game Catalog Help");
-        alert.setContentText("Use the Add menu to add a new game.\nUse the File menu to import/export games.\nSearch by selecting a field and typing.");
-        alert.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/help_view.fxml"));
+            Parent root = loader.load();
+
+            Stage helpStage = new Stage();
+            helpStage.setTitle("Help");
+            helpStage.setScene(new Scene(root));
+            helpStage.setResizable(false);
+            helpStage.initModality(Modality.APPLICATION_MODAL);
+            helpStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
     private void showGameDetailPopup(Game game) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/view/game_detail.fxml"));
