@@ -22,7 +22,7 @@
                     <Label text="🔹 Editing or Deleting a Game" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
                     <Label wrapText="true" text="Select a game from the list and click 'Edit' to modify its details or 'Delete' to remove it from the catalog. Changes are saved immediately." />
 
-                    <Label text="🔹 Search, Filter" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                    <Label text="🔹 Search &amp; Filter" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
                     <Label wrapText="true" text="Use the search bar to find games by title, and apply filters based on tags or platforms for more precise results." />
 
                     <Label text="🔹 Import / Export" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
