@@ -43,7 +43,11 @@
     </top>
 
     <center>
-        <TableView fx:id="gameTable" prefHeight="600.0" prefWidth="1000.0"/>
+        <TableView fx:id="gameTable"
+                   prefHeight="600.0"
+                   prefWidth="1000.0"
+                   style="-fx-background-color: #fce4ec; -fx-border-color: transparent;" />
+
     </center>
 
 </BorderPane>

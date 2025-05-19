@@ -206,6 +206,9 @@ public class MainController {
             e.printStackTrace();
         }
 
+        gameTable.setStyle("-fx-control-inner-background: #fce4ec; -fx-background-color: #fce4ec;");
+
+
         gameTable.setRowFactory(tv -> {
             TableRow<Game> row = new TableRow<>(){
                 @Override
