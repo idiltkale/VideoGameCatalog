@@ -142,7 +142,7 @@ public class MainController {
                             catalog.removeGame(game);
                             gameTable.getItems().remove(game);
                             try {
-                                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+                                JSONHandler.saveGamesToFile(catalog.getGames(), JSONHandler.getUserDataFile());
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
@@ -198,13 +198,11 @@ public class MainController {
             gameTable.getItems().setAll(result);
         });
 
-        try {
-            List<Game> loadedGames = JSONHandler.loadGamesFromFile(new File("games.json"));
-            catalog.setGames(loadedGames);
-            gameTable.getItems().setAll(loadedGames);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<Game> loadedGames = JSONHandler.loadOrInitializeUserData();
+        catalog.setGames(loadedGames);
+        gameTable.getItems().setAll(loadedGames);
+
+
 
         gameTable.setStyle("-fx-control-inner-background: #fce4ec; -fx-background-color: #fce4ec;");
 
@@ -253,7 +251,7 @@ public class MainController {
             if (newGame != null && newGame.getTitle() != null && !newGame.getTitle().isBlank()) {
                 catalog.addGame(newGame);
                 gameTable.getItems().add(newGame);
-                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+                JSONHandler.saveGamesToFile(catalog.getGames(), JSONHandler.getUserDataFile());
             }
 
         } catch (Exception e) {
@@ -323,7 +321,7 @@ public class MainController {
                 List<Game> importedGames = JSONHandler.loadGamesFromFile(selectedFile);
                 catalog.getGames().addAll(importedGames);
                 gameTable.getItems().addAll(importedGames);
-                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json")); // save merged
+                JSONHandler.saveGamesToFile(catalog.getGames(), JSONHandler.getUserDataFile());
             } catch (IOException e) {
                 e.printStackTrace();
                 showAlert("Import Failed", "Could not import games from file.");
@@ -352,7 +350,7 @@ public class MainController {
             Game updatedGame = controller.getGameFromForm();
             if (updatedGame != null) {
                 gameTable.refresh();
-                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+                JSONHandler.saveGamesToFile(catalog.getGames(), JSONHandler.getUserDataFile());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -366,7 +364,7 @@ public class MainController {
             catalog.removeGame(selectedGame);
             gameTable.getItems().remove(selectedGame);
             try {
-                JSONHandler.saveGamesToFile(catalog.getGames(), new File("games.json"));
+                JSONHandler.saveGamesToFile(catalog.getGames(), JSONHandler.getUserDataFile());
             } catch (IOException e) {
                 e.printStackTrace();
             }
